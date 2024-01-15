@@ -10,9 +10,7 @@ const {authCheck,authCheckLogin,adminCheck} =require('../middlewares/auth')
 
 
   
-const { createOrUpdateUser } = require("../controllers/auth");
-const { loginController } = require("../controllers/auth");
-const { currentUser } = require("../controllers/auth");
+const { createOrUpdateUser ,loginController,currentUser} = require("../controllers/auth");
 
 
 router.post("/create-or-update-user",authCheck, createOrUpdateUser);
