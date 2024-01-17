@@ -1,30 +1,30 @@
-const Category = require("../models/category");
+const Sub = require("../models/subcategory");
 const slugify = require("slugify");
 
 exports.create = async (req, res) => {
   try {
     const { name } = req.body;
-    const category = await new Category({ name, slug: slugify(name) }).save();
-    res.json(category);
+    const sub = await new Sub({ name, slug: slugify(name) }).save();
+    res.json(sub);
   } catch (err) {
-    res.status(400).send("create category failed");
+    res.status(400).send("create sub failed");
   }
 };
 exports.list = async (req, res) => {
   try {
-    const categories = await Category.find({}).sort({ createdAt: -1 });
-    res.json(categories);
+    const subs = await Sub.find({}).sort({ createdAt: -1 });
+    res.json(subs);
   } catch (err) {
-    res.status(500).json({ error: "Failed to fetch categories" });
+    res.status(500).json({ error: "Failed to fetch subs" });
   }
 };
 
 exports.read = async (req, res) => {
   try {
-    const category = await Category.findOne({ slug: req.params.slug });
-    res.json(category);
+    const sub = await Sub.findOne({ slug: req.params.slug });
+    res.json(sub);
   } catch (err) {
-    res.status(500).json({ error: "Failed to fetch categories" });
+    res.status(500).json({ error: "Failed to fetch subs" });
   }
 };
 exports.update = async (req, res) => {
@@ -33,19 +33,19 @@ exports.update = async (req, res) => {
     console.log("update request body",req.body);
     const { name } = req.body;
     console.log(name);
-    const updated = await Category.findOneAndUpdate(
+    const updated = await Sub.findOneAndUpdate(
       { slug: req.params.slug },
       { name, slug: slugify(name) },
       { new: true }
     );
     res.json(updated);
   } catch (err) {
-    res.status(500).json({ error: "Delete Failed" });
+    res.status(500).json({ error: "Update Failed" });
   }
 };
 exports.remove = async (req, res) => {
   try {
-    const deleted = await Category.findOneAndDelete({ slug: req.params.slug });
+    const deleted = await Sub.findOneAndDelete({ slug: req.params.slug });
     res.json(deleted);
   } catch (err) {
     res.status(500).json({ error: "Delete Failed" });
