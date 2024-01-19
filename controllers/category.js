@@ -1,6 +1,6 @@
 const Category = require("../models/category");
 const slugify = require("slugify");
-
+const Sub = require("../models/subcategory");
 exports.create = async (req, res) => {
   try {
     const { name } = req.body;
@@ -28,9 +28,8 @@ exports.read = async (req, res) => {
   }
 };
 exports.update = async (req, res) => {
-   
   try {
-    console.log("update request body",req.body);
+    console.log("update request body", req.body);
     const { name } = req.body;
     console.log(name);
     const updated = await Category.findOneAndUpdate(
@@ -50,4 +49,11 @@ exports.remove = async (req, res) => {
   } catch (err) {
     res.status(500).json({ error: "Delete Failed" });
   }
+};
+
+exports.getSubs = (req, res) => {
+  Sub.find({ parent: req.params._id }).exec((err, subs) => {
+    if (err) console.log(err);
+    res.json(subs);
+  });
 };
