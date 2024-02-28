@@ -25,4 +25,4 @@ const subSchema = new mongoose.Schema({
     timestamps: true // This will add createdAt and updatedAt fields
 });
 
-module.exports = mongoose.model('sub', subSchema);
+module.exports = mongoose.model('Sub', subSchema);
