@@ -19,3 +19,16 @@ exports.listAll = async (req, res) => {
   let product = await Product.find({}).limit(parseInt(req.params.count)).populate('category').populate('subs').sort([["createdAt", "desc"]]);
   res.json(product);
 };
+
+
+exports.remove = async (req, res) => {
+  try {
+    const deleted = await Product.findOneAndDelete({
+      slug: req.params.slug,
+    });
+    res.json(deleted);
+  } catch (err) {
+    console.log(err);
+    return res.status(400).send("Product delete failed");
+  }
+};
