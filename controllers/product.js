@@ -16,10 +16,13 @@ exports.create = async (req, res) => {
 };
 
 exports.listAll = async (req, res) => {
-  let product = await Product.find({}).limit(parseInt(req.params.count)).populate('category').populate('subs').sort([["createdAt", "desc"]]);
+  let product = await Product.find({})
+    .limit(parseInt(req.params.count))
+    .populate("category")
+    .populate("subs")
+    .sort([["createdAt", "desc"]]);
   res.json(product);
 };
-
 
 exports.remove = async (req, res) => {
   try {
@@ -33,7 +36,26 @@ exports.remove = async (req, res) => {
   }
 };
 
-exports.read=async(req,res)=>{
-  const product=await Product.findOne({slug:req.params.slug}).populate('category').populate('subs')
-  res.json(product); 
-}
+exports.read = async (req, res) => {
+  const product = await Product.findOne({ slug: req.params.slug })
+    .populate("category")
+    .populate("subs");
+  res.json(product);
+};
+
+exports.update = async (req, res) => {
+  try {
+    if (req.body.title) {
+      req.body.slug = slugify(req.body.title);
+    }
+    const updated = await Product.findOneAndUpdate(
+      { slug: req.params.slug },
+      req.body,
+      { new: true }
+    ).exec();
+    res.json(updated);
+  } catch (err) {
+    console.log("product update error", err);
+    return res.status(400).sebd("Product update error");
+  }
+};
