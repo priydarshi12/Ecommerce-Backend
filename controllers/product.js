@@ -59,3 +59,26 @@ exports.update = async (req, res) => {
     return res.status(400).sebd("Product update error");
   }
 };
+
+
+exports.list = async (req, res) => {
+  try {
+    // createdAt/updatedAt, desc/asc, 3
+    const { sort, order, limit } = req.body;
+    const products = await Product.find({})
+      .populate("category")
+      .populate("subs")
+      .sort([[sort, order]])
+      .limit(limit)
+      
+
+    res.json(products);
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+exports.productsCount = async (req, res) => {
+  let total = await Product.find({}).estimatedDocumentCount().exec();
+  res.json(total);
+};
