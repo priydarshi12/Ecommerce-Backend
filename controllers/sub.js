@@ -1,6 +1,6 @@
 const Sub = require("../models/subcategory");
 const slugify = require("slugify");
-
+const Product = require("../models/product");
 exports.create = async (req, res) => {
   try {console.log("req body for sub category->",req.body);
 
@@ -22,12 +22,15 @@ exports.list = async (req, res) => {
 };
 
 exports.read = async (req, res) => {
-  try {
-    const sub = await Sub.findOne({ slug: req.params.slug });
-    res.json(sub);
-  } catch (err) {
-    res.status(500).json({ error: "Failed to fetch subs" });
-  }
+  let sub = await Sub.findOne({ slug: req.params.slug }).exec();
+  const products = await Product.find({ subs: sub })
+    .populate("category")
+    .exec();
+
+  res.json({
+    sub,
+    products,
+  });
 };
 exports.update = async (req, res) => {
   try {
