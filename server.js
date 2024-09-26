@@ -17,7 +17,7 @@ mongoose
 
 app.listen(() => console.log());
 
-//middleware
+//Middleware
 app.use(morgan("dev"));
 app.use(bodyParser.json({ parameterLimit: 100000, limit: "20mb" }));
 app.use(cors());
